@@ -17,6 +17,5 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Interfaces
         public Task DeleteUser(User user);
         public Task UpdateUserPassword(Guid userId, byte[] newPassword);
 
-
     }
 }

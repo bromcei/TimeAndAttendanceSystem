@@ -1,11 +1,26 @@
+using TimeAndAttendanceSystem.Repositories.DBContext;
+using TimeAndAttendanceSystem.Repositories.Repos.Repos;
+using TimeAndAttendanceSystem.Repositories.Repositories.Interfaces;
+using TimeAndAttendanceSystem.Repositories.Repositories.Repos;
+using TimeAndAttendanceSystem.Services;
+using TimeAndAttendanceSystem.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<TimeAndAttendanceDbContext>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserDetailsRepository, UserDetailsRepository>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 

@@ -10,10 +10,10 @@ using TimeAndAttendanceSystem.Repositories.Repositories.Interfaces;
 
 namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
 {
-    public class UserDetailsRepositories : IUserDetailsRepository
+    public class UserDetailsRepository : IUserDetailsRepository
     {
         private TimeAndAttendanceDbContext _dbContext;
-        public UserDetailsRepositories(TimeAndAttendanceDbContext dbContext)
+        public UserDetailsRepository(TimeAndAttendanceDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -43,13 +43,6 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
         public async Task<UserDetails> GetUserDetailsByUserID(Guid userId)
         {
             return await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
-        }
-
-        public async Task UpdateUserAddress(Guid userId, string newAddress)
-        {
-            UserDetails userDetails = await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
-            userDetails.Address = newAddress;
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateUserEmail(Guid userId, string newEmail)

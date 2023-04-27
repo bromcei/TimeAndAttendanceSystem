@@ -19,7 +19,5 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Interfaces
         public Task UpdateUserPersonCode(Guid userId, int newPersonCode);
         public Task UpdateUserEmail(Guid userId, string newEmail);
         public Task UpdateUserTelephone(Guid userId, string newTelephone);
-        public Task UpdateUserAddress(Guid userId, string newAddress);
-
     }
 }

@@ -42,7 +42,6 @@ namespace TimeAndAttendanceSystem.Services
             
 
         }
-
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using var hmacHash = new HMACSHA512(passwordSalt);

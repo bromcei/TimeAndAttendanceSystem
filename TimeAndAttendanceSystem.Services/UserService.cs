@@ -14,65 +14,70 @@ namespace TimeAndAttendanceSystem.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserDetailsRepository _userDetailsRepository;
-        private readonly IUserPhotosRepository _userPhotosRepository;
-        public UserService(IUserRepository userRepository, IUserDetailsRepository userDetailsRepository, IUserPhotosRepository userPhotosRepository)
+        //private readonly IUserPhotosRepository _userPhotosRepository;
+        public UserService(IUserRepository userRepository, IUserDetailsRepository userDetailsRepository) //, IUserPhotosRepository userPhotosRepository)
         {
             _userRepository = userRepository;
             _userDetailsRepository = userDetailsRepository;
-            _userPhotosRepository = userPhotosRepository;
+         //   _userPhotosRepository = userPhotosRepository;
         }
 
-        public Task<User> CreateNewUser(User user)
+        public async Task<UserDetails> CreateUserDetails(UserDetails userDetails)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetails> CreateUserDetails(UserDetails userDetails)
+        public async Task<UserDetails> DeleteUserDetails(UserDetails userDetails)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetails> DeleteUserDetails(UserDetails userDetails)
+        public async Task<UserPhoto> DeleteUserPhoto(Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserPhoto> DeleteUserPhoto(Guid userId)
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            return await _userRepository.Get();
+        }
+
+        public async Task<User> GetUserByID(Guid userId)
+        {
+            return await _userRepository.Get(userId);
+        }
+
+        public async Task<UserDetails> UpdateUserAddress(Guid userId, string newAddress)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetails> UpdateUserAddress(Guid userId, string newAddress)
+        public async Task<UserDetails> UpdateUserEmail(Guid userId, string newEmail)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetails> UpdateUserEmail(Guid userId, string newEmail)
+        public async Task<UserDetails> UpdateUserFirstName(Guid userId, string newFirstName)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetails> UpdateUserFirstName(Guid userId, string newFirstName)
+        public async Task<UserDetails> UpdateUserLastName(Guid userId, string newLastName)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetails> UpdateUserLastName(Guid userId, string newLastName)
+        public async Task<UserDetails> UpdateUserPersonCode(Guid userId, int newPersonCode)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetails> UpdateUserPersonCode(Guid userId, int newPersonCode)
+        public async Task<UserDetails> UpdateUserTelephone(Guid userId, string newTelephone)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetails> UpdateUserTelephone(Guid userId, string newTelephone)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<UserPhoto> UploadUserPhoto(UserPhoto userPhoto)
+        public async Task<UserPhoto> UploadUserPhoto(UserPhoto userPhoto)
         {
             throw new NotImplementedException();
         }
