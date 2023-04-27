@@ -40,10 +40,15 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Repos
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
+        public async Task<User> Get(string userName)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        }
+
         public async Task UpdateUserPassword(Guid userId, byte[] newPassword)
         {
             User user = await Get(userId);
-            user.Password = newPassword;
+            user.PasswordHash = newPassword;
             await _dbContext.SaveChangesAsync();
         }
     }

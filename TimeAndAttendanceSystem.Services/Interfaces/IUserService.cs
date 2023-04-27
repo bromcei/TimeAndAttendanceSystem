@@ -9,7 +9,6 @@ namespace TimeAndAttendanceSystem.Services.Interfaces
 {
     public interface IUserService
     {
-        public Task<User> CreateNewUser(User user);
         public Task<UserDetails> CreateUserDetails(UserDetails userDetails);
         public Task<UserPhoto> UploadUserPhoto(UserPhoto userPhoto);
         public Task<UserPhoto> DeleteUserPhoto(Guid userId);

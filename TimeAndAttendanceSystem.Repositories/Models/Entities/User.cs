@@ -11,26 +11,27 @@ namespace TimeAndAttendanceSystem.Repositories.Models.Entities
     {
         [Key]
         public Guid Id { get; set; }
+        [Required, MaxLength(32)]
+        public string UserName { get; set; }
         [Required]
-        public byte[] Password{ get; set; }
+        public byte[] PasswordHash { get; set; }
         [Required]
         public byte[] PasswordSalt { get; set; }
         [Required]
         public string UserRole { get; set; }
         [Required]
         public DateTime CreatedDate { get; set; }
-        public UserDetails Details { get; set; }
-        public UserPhoto Photo { get; set; }
+        public UserDetails? Details { get; set; }
+        public UserPhoto? Photo { get; set; }
 
-        public User(byte[] password, byte[] passwordSalt, DateTime createdDate, UserDetails? details, UserPhoto? photo)
+        public User(string userName, byte[] passwordHash, byte[] passwordSalt)
         {
             Id = new Guid();
-            Password = password;
+            UserName = userName;
+            PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
             UserRole = "user";
             CreatedDate = DateTime.Now;
-            Details = details;
-            Photo = photo;
         }
     }
 }
