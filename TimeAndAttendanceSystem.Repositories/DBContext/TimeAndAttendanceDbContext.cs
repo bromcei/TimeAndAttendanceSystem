@@ -14,6 +14,7 @@ namespace TimeAndAttendanceSystem.Repositories.DBContext
         public DbSet<User> Users { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
         public DbSet<UserPhoto> UserPhotos { get; set; }
+        public DbSet<UserAddress> UserAddresses { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             //options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection"));
@@ -23,7 +24,7 @@ namespace TimeAndAttendanceSystem.Repositories.DBContext
         {
             modelBuilder.Entity<User>().HasOne(u => u.Details).WithOne(ud => ud.User).HasForeignKey<UserDetails>(ud => ud.UserId);
             modelBuilder.Entity<User>().HasOne(u => u.Photo).WithOne(up => up.User).HasForeignKey<UserPhoto>(up => up.UserId);
-
+            modelBuilder.Entity<User>().HasOne(u => u.Address).WithOne(ua => ua.User).HasForeignKey<UserAddress>(ua => ua.UserId);
         }
 
     }

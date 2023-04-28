@@ -14,9 +14,6 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Interfaces
         public Task<UserAddress> GetUserAddressByUserID(Guid userId);
         public Task AddUserAddress(UserAddress userAddress);
         public Task DeleteUserAddress(Guid userId);
-        public Task UpdateUserAddressCountry(Guid userId, string newCountry);
-        public Task UpdateUserAddressCity(Guid userId, string newCity);
-        public Task UpdateUserAddressStreet(Guid userId, string newStreet);
-        public Task UpdateUserAddressHouseNumber(Guid userId, string newHouseNumber);
+        public Task UpdateUserAddress(UserAddress userAddress);
     }
 }

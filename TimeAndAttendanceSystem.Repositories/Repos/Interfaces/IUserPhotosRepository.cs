@@ -9,11 +9,10 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Interfaces
 {
     public interface IUserPhotosRepository
     {
-        public IEnumerable<UserPhoto> Get();
-        public UserPhoto GetUserPhoto(Guid userId);
-        public void AddNewUserPhoto(UserPhoto userPhoto);
-        public void DeleteUserPhoto(Guid userId);
-
-
+        public Task<IEnumerable<UserPhoto>> Get();
+        public Task<UserPhoto> Get(Guid id);
+        public Task<UserPhoto> GetUserPhoto(Guid userId);
+        public Task UpdateUserPhoto(UserPhoto userPhoto);
+        public Task DeleteUserPhoto(UserPhoto userPhoto);
     }
 }

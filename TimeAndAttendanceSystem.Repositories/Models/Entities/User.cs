@@ -22,6 +22,7 @@ namespace TimeAndAttendanceSystem.Repositories.Models.Entities
         [Required]
         public DateTime CreatedDate { get; set; }
         public UserDetails? Details { get; set; }
+        public UserAddress? Address { get; set; }
         public UserPhoto? Photo { get; set; }
 
         public User(string userName, byte[] passwordHash, byte[] passwordSalt)

@@ -12,7 +12,7 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Repos
 {
     public class UserRepository : IUserRepository
     {
-        private TimeAndAttendanceDbContext _dbContext;
+        private readonly TimeAndAttendanceDbContext _dbContext;
         public UserRepository(TimeAndAttendanceDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -45,10 +45,9 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Repos
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
         }
 
-        public async Task UpdateUserPassword(Guid userId, byte[] newPassword)
+        public async Task UpdateUser(User user)
         {
-            User user = await Get(userId);
-            user.PasswordHash = newPassword;
+            _dbContext.Update(user);
             await _dbContext.SaveChangesAsync();
         }
     }

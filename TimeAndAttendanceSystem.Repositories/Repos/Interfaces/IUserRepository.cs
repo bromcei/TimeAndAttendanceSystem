@@ -15,7 +15,7 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Interfaces
         public Task<User> Get(string userName);
         public Task CreateUser(User user);
         public Task DeleteUser(User user);
-        public Task UpdateUserPassword(Guid userId, byte[] newPassword);
+        public Task UpdateUser(User user);
 
     }
 }

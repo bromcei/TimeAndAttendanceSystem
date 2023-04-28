@@ -17,6 +17,7 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
         {
             _dbContext = dbContext;
         }
+
         public async Task AddUserDetails(UserDetails userDetails)
         {
             await _dbContext.UserDetails.AddAsync(userDetails);
@@ -45,38 +46,9 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
             return await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
         }
 
-        public async Task UpdateUserEmail(Guid userId, string newEmail)
+        public async Task UpdateUserDetails(UserDetails userDetails)
         {
-            UserDetails userDetails = await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
-            userDetails.Email = newEmail;
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateUserFirstName(Guid userId, string newFirstName)
-        {
-            UserDetails userDetails = await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
-            userDetails.FirstName = newFirstName;
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateUserLastName(Guid userId, string newLastName)
-        {
-            UserDetails userDetails = await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
-            userDetails.LastName = newLastName;
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateUserPersonCode(Guid userId, int newPersonCode)
-        {
-            UserDetails userDetails = await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
-            userDetails.PersonCode = newPersonCode;
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateUserTelephone(Guid userId, string newTelephone)
-        {
-            UserDetails userDetails = await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
-            userDetails.PhoneNumber = newTelephone;
+            _dbContext.Update(userDetails);
             await _dbContext.SaveChangesAsync();
         }
     }
