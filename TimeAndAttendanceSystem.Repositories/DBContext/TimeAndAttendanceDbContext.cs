@@ -9,17 +9,17 @@ using TimeAndAttendanceSystem.Repositories.Models.Entities;
 
 namespace TimeAndAttendanceSystem.Repositories.DBContext
 {
-    public class TimeAndAttendanceDbContext : DbContext
+    public class TatDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
         public DbSet<UserPhoto> UserPhotos { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            //options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection"));
-            options.UseSqlServer($@"Data Source=localhost;Initial Catalog=TimeAndAttendanceDB;Integrated Security=True");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //{
+        //    //options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection"));
+        //    options.UseSqlServer($@"Data Source=localhost;Initial Catalog=TimeAndAttendanceDB;Integrated Security=True");
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasOne(u => u.Details).WithOne(ud => ud.User).HasForeignKey<UserDetails>(ud => ud.UserId);

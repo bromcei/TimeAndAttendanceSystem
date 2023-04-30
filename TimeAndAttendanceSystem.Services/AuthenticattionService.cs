@@ -39,8 +39,6 @@ namespace TimeAndAttendanceSystem.Services
                 return true;
             }       
             return false;
-            
-
         }
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {

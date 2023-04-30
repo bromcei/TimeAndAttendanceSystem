@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TimeAndAttendanceSystem.Repositories.DBContext;
 using TimeAndAttendanceSystem.Repositories.Repos.Repos;
 using TimeAndAttendanceSystem.Repositories.Repositories.Interfaces;
@@ -8,7 +9,7 @@ using TimeAndAttendanceSystem.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<TimeAndAttendanceDbContext>();
+builder.Services.AddDbContext<TatDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserDetailsRepository, UserDetailsRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
