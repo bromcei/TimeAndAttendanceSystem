@@ -8,6 +8,6 @@ namespace TimeAndAttendanceSystem.Services.Interfaces
 {
     public interface IJwtService
     {
-        public Task<string> GetJwtToken(string username);
+        public Task<string> GetJwtToken(string username, string role);
     }
 }

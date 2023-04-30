@@ -92,6 +92,11 @@ namespace TimeAndAttendanceSystem.Services
             return null;
         }
 
+        public async Task<User?> GetUserByUserName(string username)
+        {
+            return await _userRepository.Get(username);
+        }
+
         public async Task<UserAddress?> UpdateUserAddressCity(Guid userId, string newCity)
         {
             UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeAndAttendanceSystem.Repositories.Models.Entities;
 using TimeAndAttendanceSystem.Services.Interfaces;
@@ -20,22 +22,8 @@ namespace TimeAndAttendanceSystem.Controllers
             _logger = logger;
         }
 
-        [HttpPost("registerUser")]
-        public async Task<ActionResult<User>> RegisterUser(string username, string password)
-        {
-            var user = await _authenticationService.CreateUser(username, password);
 
-            return Ok(user);
-        }
-
-        [HttpPost("login")]
-        public async Task<ActionResult<bool>> login(string username, string password)
-        {
-            var loginResult = await _authenticationService.Login(username, password);
-
-            return Ok(loginResult);
-        }
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user")]
         [HttpGet("getUser")]
         public async Task<ActionResult<User>> GetUserById(Guid userId)
         {
@@ -46,6 +34,8 @@ namespace TimeAndAttendanceSystem.Controllers
             }
             return Ok(user);
         }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user")]
         [HttpGet("allUsers")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {

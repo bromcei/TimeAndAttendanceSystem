@@ -32,7 +32,7 @@ namespace TimeAndAttendanceSystem.Services
             var tokenOptions = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                claims: new List<Claim>(),
+                claims: claims,
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: signinCredentials
             );

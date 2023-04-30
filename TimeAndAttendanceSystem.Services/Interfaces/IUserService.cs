@@ -10,6 +10,7 @@ namespace TimeAndAttendanceSystem.Services.Interfaces
     public interface IUserService
     {
         public Task<User?> GetUserByID(Guid userId);
+        public Task<User?> GetUserByUserName(string username);
         public Task<IEnumerable<User>?> GetAllUsers();
         public Task<UserDetails?> CreateUserDetails(Guid userId, string firstName, string lastName, int personCode, string phoneNumber, string email);
         public Task<UserAddress?> CreateUserAddress(Guid userId, string country, string city, string street, int houseNumber, string? houseNumberPrefix);
