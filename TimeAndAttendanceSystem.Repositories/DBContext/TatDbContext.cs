@@ -15,6 +15,10 @@ namespace TimeAndAttendanceSystem.Repositories.DBContext
         public DbSet<UserDetails> UserDetails { get; set; }
         public DbSet<UserPhoto> UserPhotos { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
+        public TatDbContext(DbContextOptions<TatDbContext> options) : base(options)
+        {
+
+        }
         //protected override void OnConfiguring(DbContextOptionsBuilder options)
         //{
         //    //options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection"));

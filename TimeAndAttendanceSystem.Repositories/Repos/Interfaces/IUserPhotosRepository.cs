@@ -12,6 +12,7 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Interfaces
         public Task<IEnumerable<UserPhoto>> Get();
         public Task<UserPhoto> Get(Guid id);
         public Task<UserPhoto> GetUserPhoto(Guid userId);
+        public Task AddUserPhoto(UserPhoto userPhoto);
         public Task UpdateUserPhoto(UserPhoto userPhoto);
         public Task DeleteUserPhoto(UserPhoto userPhoto);
     }

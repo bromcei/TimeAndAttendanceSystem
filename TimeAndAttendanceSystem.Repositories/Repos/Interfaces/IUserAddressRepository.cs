@@ -13,7 +13,7 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Interfaces
         public Task<UserAddress> Get(Guid id);
         public Task<UserAddress> GetUserAddressByUserID(Guid userId);
         public Task AddUserAddress(UserAddress userAddress);
-        public Task DeleteUserAddress(Guid userId);
+        public Task DeleteUserAddress(UserAddress userAddress);
         public Task UpdateUserAddress(UserAddress userAddress);
     }
 }

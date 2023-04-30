@@ -12,10 +12,16 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
 {
     public class UserPhotosRepository : IUserPhotosRepository
     {
-        private readonly TimeAndAttendanceDbContext _dbContext;
-        public UserPhotosRepository(TimeAndAttendanceDbContext dbContext)
+        private readonly TatDbContext _dbContext;
+        public UserPhotosRepository(TatDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task AddUserPhoto(UserPhoto userPhoto)
+        {
+            await _dbContext.UserPhotos.AddAsync(userPhoto);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteUserPhoto(UserPhoto userPhoto)

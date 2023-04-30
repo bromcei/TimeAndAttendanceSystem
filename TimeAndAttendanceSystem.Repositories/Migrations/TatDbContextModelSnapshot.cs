@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TimeAndAttendanceSystem.Repositories.DBContext;
 
@@ -11,11 +10,10 @@ using TimeAndAttendanceSystem.Repositories.DBContext;
 
 namespace TimeAndAttendanceSystem.Repositories.Migrations
 {
-    [DbContext(typeof(TimeAndAttendanceDbContext))]
-    [Migration("20230427212812_firstMigration")]
-    partial class firstMigration
+    [DbContext(typeof(TatDbContext))]
+    partial class TatDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,6 +51,46 @@ namespace TimeAndAttendanceSystem.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TimeAndAttendanceSystem.Repositories.Models.Entities.UserAddress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("HouseNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("int");
+
+                    b.Property<string>("HouseNumberPreffix")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserAddresses");
                 });
 
             modelBuilder.Entity("TimeAndAttendanceSystem.Repositories.Models.Entities.UserDetails", b =>
@@ -116,6 +154,17 @@ namespace TimeAndAttendanceSystem.Repositories.Migrations
                     b.ToTable("UserPhotos");
                 });
 
+            modelBuilder.Entity("TimeAndAttendanceSystem.Repositories.Models.Entities.UserAddress", b =>
+                {
+                    b.HasOne("TimeAndAttendanceSystem.Repositories.Models.Entities.User", "User")
+                        .WithOne("Address")
+                        .HasForeignKey("TimeAndAttendanceSystem.Repositories.Models.Entities.UserAddress", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TimeAndAttendanceSystem.Repositories.Models.Entities.UserDetails", b =>
                 {
                     b.HasOne("TimeAndAttendanceSystem.Repositories.Models.Entities.User", "User")
@@ -140,6 +189,8 @@ namespace TimeAndAttendanceSystem.Repositories.Migrations
 
             modelBuilder.Entity("TimeAndAttendanceSystem.Repositories.Models.Entities.User", b =>
                 {
+                    b.Navigation("Address");
+
                     b.Navigation("Details");
 
                     b.Navigation("Photo");

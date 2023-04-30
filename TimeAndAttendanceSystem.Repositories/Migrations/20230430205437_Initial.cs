@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TimeAndAttendanceSystem.Repositories.Migrations
 {
-    public partial class firstMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,6 +23,29 @@ namespace TimeAndAttendanceSystem.Repositories.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    HouseNumber = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    HouseNumberPreffix = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAddresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAddresses_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,6 +91,12 @@ namespace TimeAndAttendanceSystem.Repositories.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserAddresses_UserId",
+                table: "UserAddresses",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserDetails_UserId",
                 table: "UserDetails",
                 column: "UserId",
@@ -82,6 +111,9 @@ namespace TimeAndAttendanceSystem.Repositories.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "UserAddresses");
+
             migrationBuilder.DropTable(
                 name: "UserDetails");
 

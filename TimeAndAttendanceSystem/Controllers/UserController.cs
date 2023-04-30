@@ -9,13 +9,31 @@ namespace TimeAndAttendanceSystem.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IAuthenticationService _authenticationService;
 
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService, ILogger<UserController> logger)
+        public UserController(IUserService userService, IAuthenticationService authenticationService, ILogger<UserController> logger)
         {
             _userService = userService;
+            _authenticationService = authenticationService;
             _logger = logger;
+        }
+
+        [HttpPost("registerUser")]
+        public async Task<ActionResult<User>> RegisterUser(string username, string password)
+        {
+            var user = await _authenticationService.CreateUser(username, password);
+
+            return Ok(user);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<bool>> login(string username, string password)
+        {
+            var loginResult = await _authenticationService.Login(username, password);
+
+            return Ok(loginResult);
         }
 
         [HttpGet("getUser")]

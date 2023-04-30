@@ -129,44 +129,96 @@ namespace TimeAndAttendanceSystem.Services
             return null;
         }
 
-        public Task<UserAddress> UpdateUserAddressHouseNumberPreffix(Guid userId, string newHouseNumberPreffix)
+        public async Task<UserAddress?> UpdateUserAddressHouseNumberPreffix(Guid userId, string newHouseNumberPreffix)
         {
-            throw new NotImplementedException();
+            UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
+            if (userAddress != null)
+            {
+                userAddress.HouseNumberPreffix = newHouseNumberPreffix;
+                await _userAddressRepository.UpdateUserAddress(userAddress);
+                return userAddress;
+            }
+            return null;
         }
 
-        public Task<UserAddress> UpdateUserAddressStreet(Guid userId, string newStreet)
+        public async Task<UserAddress?> UpdateUserAddressStreet(Guid userId, string newStreet)
         {
-            throw new NotImplementedException();
+            UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
+            if (userAddress != null)
+            {
+                userAddress.Street = newStreet;
+                await _userAddressRepository.UpdateUserAddress(userAddress);
+                return userAddress;
+            }
+            return null;
         }
 
-        public Task<UserDetails> UpdateUserEmail(Guid userId, string newEmail)
+        public async Task<UserDetails?> UpdateUserEmail(Guid userId, string newEmail)
         {
-            throw new NotImplementedException();
+            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            if (userDetails != null)
+            {
+                userDetails.Email = newEmail;
+                await _userDetailsRepository.UpdateUserDetails(userDetails);
+                return userDetails;
+            }
+            return null;
         }
 
-        public Task<UserDetails> UpdateUserFirstName(Guid userId, string newFirstName)
+        public async Task<UserDetails?> UpdateUserFirstName(Guid userId, string newFirstName)
         {
-            throw new NotImplementedException();
+            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            if (userDetails != null)
+            {
+                userDetails.FirstName = newFirstName;
+                await _userDetailsRepository.UpdateUserDetails(userDetails);
+                return userDetails;
+            }
+            return null;
         }
 
-        public Task<UserDetails> UpdateUserLastName(Guid userId, string newLastName)
+        public async Task<UserDetails?> UpdateUserLastName(Guid userId, string newLastName)
         {
-            throw new NotImplementedException();
+            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            if (userDetails != null)
+            {
+                userDetails.LastName = newLastName;
+                await _userDetailsRepository.UpdateUserDetails(userDetails);
+                return userDetails;
+            }
+            return null;
         }
 
-        public Task<UserDetails> UpdateUserPersonCode(Guid userId, int newPersonCode)
+        public async Task<UserDetails?> UpdateUserPersonCode(Guid userId, int newPersonCode)
         {
-            throw new NotImplementedException();
+            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            if (userDetails != null)
+            {
+                userDetails.PersonCode = newPersonCode;
+                await _userDetailsRepository.UpdateUserDetails(userDetails);
+                return userDetails;
+            }
+            return null;
         }
 
-        public Task<UserDetails> UpdateUserTelephone(Guid userId, string newTelephone)
+        public async Task<UserDetails?> UpdateUserTelephone(Guid userId, string newTelephone)
         {
-            throw new NotImplementedException();
+            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            if (userDetails != null)
+            {
+                userDetails.PhoneNumber = newTelephone;
+                await _userDetailsRepository.UpdateUserDetails(userDetails);
+                return userDetails;
+            }
+            return null;
         }
 
-        public Task<UserPhoto> UploadUserPhoto(Guid userId, byte[] profilePic)
+        public async Task<UserPhoto> UploadUserPhoto(Guid userId, byte[] profilePic)
         {
-            throw new NotImplementedException();
+            UserPhoto userPhoto = new UserPhoto(userId, profilePic);
+            await _userPhotosRepository.AddUserPhoto(userPhoto);
+
+            return userPhoto;
         }
     }
 }

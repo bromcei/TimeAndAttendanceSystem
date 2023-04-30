@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TimeAndAttendanceSystem.Repositories.DBContext;
+using TimeAndAttendanceSystem.Repositories.Repos.Interfaces;
 using TimeAndAttendanceSystem.Repositories.Repos.Repos;
 using TimeAndAttendanceSystem.Repositories.Repositories.Interfaces;
 using TimeAndAttendanceSystem.Repositories.Repositories.Repos;
@@ -12,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TatDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserDetailsRepository, UserDetailsRepository>();
+builder.Services.AddTransient<IUserAddressRepository, UserAddressRepository>();
+builder.Services.AddTransient<IUserPhotosRepository, UserPhotosRepository>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticattionService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddControllers();

@@ -12,8 +12,8 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Repos
 {
     public class UserRepository : IUserRepository
     {
-        private readonly TimeAndAttendanceDbContext _dbContext;
-        public UserRepository(TimeAndAttendanceDbContext dbContext)
+        private readonly TatDbContext _dbContext;
+        public UserRepository(TatDbContext dbContext)
         {
             _dbContext = dbContext;
         }

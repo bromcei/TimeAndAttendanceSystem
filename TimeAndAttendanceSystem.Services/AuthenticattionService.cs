@@ -34,7 +34,7 @@ namespace TimeAndAttendanceSystem.Services
         public async Task<bool> Login(string userName, string password)
         {
             var user = await _userRepository.Get(userName);
-            if (VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            if (VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt) && user != null)
             {
                 return true;
             }       
