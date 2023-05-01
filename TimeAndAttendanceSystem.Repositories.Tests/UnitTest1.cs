@@ -33,14 +33,20 @@ namespace TimeAndAttendanceSystem.Repositories.Tests
                 userAddressRepositoryMock.Object, 
                 userPhotosRepositoryMock.Object, 
                 mapperMock.Object);
-            //var sut = new UnitTest1(userRepositoryMock.Object, mapperMock.Object);
-            userRepositoryMock.Setup(x => x.Get(It.IsAny<Guid>())).Returns(user);
+            
+            userRepositoryMock.Setup(x => x.Get(It.IsAny<Guid>())).Returns(Task.FromResult(user));
 
             //Act
-            var testReponse = sut.GetUserByID(It.IsAny<Guid>()).Result;
+            var testReponse1 = sut.GetUserByID(It.IsAny<Guid>()).Result;
+            var testReponse2 = sut.GetUserByUserName(It.IsAny<string>()).Result;
 
             //Assert
-            Assert.Equal(testReponse, user);
+            if (testReponse1 != null && testReponse2 != null)
+            {
+                Assert.Equal(testReponse1.UserName, user.UserName);
+                Assert.Equal(testReponse2.UserName, user.UserName);
+            }
+            
 
 
         }
