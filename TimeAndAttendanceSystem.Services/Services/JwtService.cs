@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TimeAndAttendanceSystem.Services.Interfaces;
 
-namespace TimeAndAttendanceSystem.Services
+namespace TimeAndAttendanceSystem.Services.Services
 {
     public class JwtService : IJwtService
     {
@@ -19,11 +19,12 @@ namespace TimeAndAttendanceSystem.Services
             _configuration = configuration;
         }
 
-        public async Task<string> GetJwtToken(string username, string role)
+        public async Task<string> GetJwtToken(string username, Guid userId, string role)
         {
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Role, role),
             };
 

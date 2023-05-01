@@ -8,7 +8,7 @@ using TimeAndAttendanceSystem.Repositories.Models.Entities;
 using TimeAndAttendanceSystem.Repositories.Repositories.Interfaces;
 using TimeAndAttendanceSystem.Services.Interfaces;
 
-namespace TimeAndAttendanceSystem.Services
+namespace TimeAndAttendanceSystem.Services.Services
 {
     public class AuthenticattionService : IAuthenticationService
     {
@@ -42,13 +42,13 @@ namespace TimeAndAttendanceSystem.Services
             if (VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt) && user != null)
             {
                 return true;
-            }       
+            }
             return false;
         }
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using var hmacHash = new HMACSHA512(passwordSalt);
-            var computedHash = hmacHash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            var computedHash = hmacHash.ComputeHash(Encoding.UTF8.GetBytes(password));
 
             return computedHash.SequenceEqual(passwordHash);
         }

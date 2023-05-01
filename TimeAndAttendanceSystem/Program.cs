@@ -12,8 +12,8 @@ using TimeAndAttendanceSystem.Repositories.Repos.Interfaces;
 using TimeAndAttendanceSystem.Repositories.Repos.Repos;
 using TimeAndAttendanceSystem.Repositories.Repositories.Interfaces;
 using TimeAndAttendanceSystem.Repositories.Repositories.Repos;
-using TimeAndAttendanceSystem.Services;
 using TimeAndAttendanceSystem.Services.Interfaces;
+using TimeAndAttendanceSystem.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +30,8 @@ builder.Services.AddTransient<IUserPhotosRepository, UserPhotosRepository>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticattionService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddScoped<IImageReshapeService, ImageReshapeService>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -37,11 +39,6 @@ builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 SetUpSwagger(builder.Services);
 SetUpAuthentication(builder.Services);
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-
-
-
-
 
 
 var app = builder.Build();

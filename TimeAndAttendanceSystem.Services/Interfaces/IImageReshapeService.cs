@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TimeAndAttendanceSystem.Services.Interfaces
 {
-    public interface IJwtService
+    public interface IImageReshapeService
     {
-        public Task<string> GetJwtToken(string username, Guid userId, string role);
+        public Task<byte[]> ResizeImage(byte[] imageBytes);
+        public Task<Image> DownloadImage(byte[] imageData);
     }
 }

@@ -41,7 +41,7 @@ public class AuthenticationController : ControllerBase
         if(await _authenticationService.Login(username, password))
         {
             UserDTO user = await _userService.GetUserByUserName(username);
-            var token = await _jwtService.GetJwtToken(username, user.UserRole);
+            var token = await _jwtService.GetJwtToken(username, user.Id, user.UserRole);
             return token;
         }
 
