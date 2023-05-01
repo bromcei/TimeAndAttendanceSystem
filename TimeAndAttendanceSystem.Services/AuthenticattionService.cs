@@ -21,14 +21,19 @@ namespace TimeAndAttendanceSystem.Services
         {
             byte[] passwordSalt;
             byte[] passwordHash;
-            using (var hmacHash = new HMACSHA512())
+            if (await _userRepository.Get(userName) == null && password.Count() > 0)
             {
-                passwordSalt = hmacHash.Key;
-                passwordHash = hmacHash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                using (var hmacHash = new HMACSHA512())
+                {
+                    passwordSalt = hmacHash.Key;
+                    passwordHash = hmacHash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                }
+                User user = new User(userName, passwordHash, passwordSalt);
+                await _userRepository.CreateUser(user);
+                return user;
             }
-            User user = new User(userName, passwordHash, passwordSalt);
-            await _userRepository.CreateUser(user);
-            return user;
+            return null;
+
         }
 
         public async Task<bool> Login(string userName, string password)

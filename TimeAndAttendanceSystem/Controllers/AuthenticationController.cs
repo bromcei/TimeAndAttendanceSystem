@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TimeAndAttendanceSystem.Repositories.Models.DTOs;
 using TimeAndAttendanceSystem.Repositories.Models.Entities;
 using TimeAndAttendanceSystem.Services.Interfaces;
 
@@ -35,11 +36,11 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(string username, string password)
+    public async Task<ActionResult<string>?> Login(string username, string password)
     {
         if(await _authenticationService.Login(username, password))
         {
-            User user = await _userService.GetUserByUserName(username);
+            UserDTO user = await _userService.GetUserByUserName(username);
             var token = await _jwtService.GetJwtToken(username, user.UserRole);
             return token;
         }

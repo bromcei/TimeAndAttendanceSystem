@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TimeAndAttendanceSystem.Repositories.DBContext;
 
@@ -11,9 +12,10 @@ using TimeAndAttendanceSystem.Repositories.DBContext;
 namespace TimeAndAttendanceSystem.Repositories.Migrations
 {
     [DbContext(typeof(TatDbContext))]
-    partial class TatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230501104830_secondMig")]
+    partial class secondMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,13 +116,13 @@ namespace TimeAndAttendanceSystem.Repositories.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<long>("PersonCode")
-                        .HasColumnType("bigint");
+                    b.Property<int>("PersonCode")
+                        .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");

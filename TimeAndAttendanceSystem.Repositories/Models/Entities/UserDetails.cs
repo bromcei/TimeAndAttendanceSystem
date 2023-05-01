@@ -20,12 +20,12 @@ namespace TimeAndAttendanceSystem.Repositories.Models.Entities
         [Required, MaxLength(50)]
         public string LastName { get; set; }
         [Required]
-        public int PersonCode { get; set; }
+        public long PersonCode { get; set; }
         [Required, MaxLength(12)]
         public string PhoneNumber { get; set; }
         [Required, MaxLength(50)]
         public string Email { get; set; }
-        public UserDetails(Guid userId, string firstName, string lastName, int personCode, string phoneNumber, string email)
+        public UserDetails(Guid userId, string firstName, string lastName, long personCode, string phoneNumber, string email)
         {
             Id = new Guid();
             UserId = userId;

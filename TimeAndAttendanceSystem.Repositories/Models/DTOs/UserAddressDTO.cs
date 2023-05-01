@@ -8,17 +8,15 @@ using TimeAndAttendanceSystem.Repositories.Models.Entities;
 
 namespace TimeAndAttendanceSystem.Repositories.Models.DTOs
 {
-    public class UserDetailsDTO
+    public class UserAddressDTO
     {
 
         public Guid Id { get; set; }
-
         public Guid UserId { get; set; }
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public long? PersonCode { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Email { get; set; }       
-
+        public string Country { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+        public int HouseNumber { get; set; }
+        public string? HouseNumberPreffix { get; set; }
     }
 }

@@ -1,9 +1,13 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using TimeAndAttendanceSystem.Repositories.DBContext;
+using TimeAndAttendanceSystem.Repositories.Mappers;
 using TimeAndAttendanceSystem.Repositories.Repos.Interfaces;
 using TimeAndAttendanceSystem.Repositories.Repos.Repos;
 using TimeAndAttendanceSystem.Repositories.Repositories.Interfaces;
@@ -30,11 +34,13 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
-
 //builder.Services.AddSwaggerGen();
 SetUpSwagger(builder.Services);
 SetUpAuthentication(builder.Services);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+
+
 
 
 

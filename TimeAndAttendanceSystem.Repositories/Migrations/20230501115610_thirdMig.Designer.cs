@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TimeAndAttendanceSystem.Repositories.DBContext;
 
@@ -11,9 +12,10 @@ using TimeAndAttendanceSystem.Repositories.DBContext;
 namespace TimeAndAttendanceSystem.Repositories.Migrations
 {
     [DbContext(typeof(TatDbContext))]
-    partial class TatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230501115610_thirdMig")]
+    partial class thirdMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
