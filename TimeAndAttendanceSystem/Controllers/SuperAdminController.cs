@@ -28,7 +28,7 @@ namespace TimeAndAttendanceSystem.API.Controllers
         }
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
         [HttpGet("getUserById")]
-        public async Task<ActionResult<User>> GetUserById(Guid userId)
+        public async Task<ActionResult<User?>> GetUserById(Guid userId)
         {
             var userName = User.Identity.Name;
             var user = await _userService.GetUserByID(userId);

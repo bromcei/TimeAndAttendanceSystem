@@ -31,17 +31,17 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserDetails>> Get()
+        public async Task<IEnumerable<UserDetails>?> Get()
         {
             return await _dbContext.UserDetails.ToListAsync();
         }
 
-        public async Task<UserDetails> Get(Guid id)
+        public async Task<UserDetails?> Get(Guid id)
         {
             return await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.Id == id);
         }
 
-        public async Task<UserDetails> GetUserDetailsByUserID(Guid userId)
+        public async Task<UserDetails?> GetUserDetailsByUserID(Guid userId)
         {
             return await _dbContext.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
         }
