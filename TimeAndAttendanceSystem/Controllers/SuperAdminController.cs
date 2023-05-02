@@ -362,7 +362,7 @@ namespace TimeAndAttendanceSystem.API.Controllers
             if (userPhoto != null)
             {
                 var img = await _imageReshapeService.DownloadImage(userPhoto.ProfilePic);
-                return Ok(img);
+                return File(userPhoto.ProfilePic, $"image/jpg");
             }
 
             return NotFound("Such entity doesnt exists");

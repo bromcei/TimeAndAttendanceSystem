@@ -388,7 +388,7 @@ namespace TimeAndAttendanceSystem.Controllers
                     if (userPhoto != null)
                     {
                         var img = await _imageReshapeService.DownloadImage(userPhoto.ProfilePic);
-                        return File(userPhoto.ProfilePic, $"image.jpg");
+                        return File(userPhoto.ProfilePic, $"image/jpg");
                     }
                     return NotFound($"User {user.Id} does not have photo");
                 }
