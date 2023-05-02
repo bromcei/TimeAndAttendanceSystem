@@ -20,29 +20,47 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
 
         public async Task AddUserPhoto(UserPhoto userPhoto)
         {
-            await _dbContext.UserPhotos.AddAsync(userPhoto);
-            await _dbContext.SaveChangesAsync();
+            if (_dbContext.UserPhotos != null)
+            {
+                await _dbContext.UserPhotos.AddAsync(userPhoto);
+                await _dbContext.SaveChangesAsync();
+            }                
         }
 
         public async Task DeleteUserPhoto(UserPhoto userPhoto)
         {
-            _dbContext.UserPhotos.Remove(userPhoto);
-            await _dbContext.SaveChangesAsync();
+            if (_dbContext.UserPhotos != null)
+            {
+                _dbContext.UserPhotos.Remove(userPhoto);
+                await _dbContext.SaveChangesAsync();
+            }          
         }
 
-        public async Task<IEnumerable<UserPhoto>> Get()
+        public async Task<IEnumerable<UserPhoto>?> Get()
         {
-            return await _dbContext.UserPhotos.ToListAsync();
+            if (_dbContext.UserPhotos != null)
+            {
+                return await _dbContext.UserPhotos.ToListAsync();
+            }
+            return null;
         }
 
-        public async Task<UserPhoto> Get(Guid id)
+        public async Task<UserPhoto?> Get(Guid id)
         {
-            return await _dbContext.UserPhotos.FirstOrDefaultAsync(up => up.Id == id);
+            if (_dbContext.UserPhotos != null)
+            {
+                return await _dbContext.UserPhotos.FirstOrDefaultAsync(up => up.Id == id);
+            }
+            return null;
         }
 
-        public async Task<UserPhoto> GetUserPhoto(Guid userId)
+        public async Task<UserPhoto?> GetUserPhoto(Guid userId)
         {
-            return await _dbContext.UserPhotos.FirstOrDefaultAsync(up => up.UserId == userId);
+            if(_dbContext.UserPhotos != null)
+            {
+                return await _dbContext.UserPhotos.FirstOrDefaultAsync(up => up.UserId == userId);
+            }
+            return null;
         }
 
         public async Task UpdateUserPhoto(UserPhoto userPhoto)

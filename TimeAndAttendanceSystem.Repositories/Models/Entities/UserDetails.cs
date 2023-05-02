@@ -35,5 +35,9 @@ namespace TimeAndAttendanceSystem.Repositories.Models.Entities
             PhoneNumber = phoneNumber;
             Email = email;
         }
+        public UserDetails()
+        {
+
+        }
     }
 }

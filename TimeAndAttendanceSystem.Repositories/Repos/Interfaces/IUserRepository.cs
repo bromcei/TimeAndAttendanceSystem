@@ -10,9 +10,9 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        public Task<IEnumerable<User>> Get();
-        public Task<User> Get(Guid id);
-        public Task<User> Get(string userName);
+        public Task<IEnumerable<User>?> Get();
+        public Task<User?> Get(Guid id);
+        public Task<User?> Get(string userName);
         public Task CreateUser(User user);
         public Task DeleteUser(User user);
         public Task UpdateUser(User user);

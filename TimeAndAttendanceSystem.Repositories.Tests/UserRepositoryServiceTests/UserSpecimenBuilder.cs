@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TimeAndAttendanceSystem.Repositories.Models.Entities;
 
-namespace TimeAndAttendanceSystem.Repositories.Tests
+namespace TimeAndAttendanceSystem.Repositories.Tests.UserRepositoryServiceTests
 {
     public class UserSpecimenBuilder : ISpecimenBuilder
     {

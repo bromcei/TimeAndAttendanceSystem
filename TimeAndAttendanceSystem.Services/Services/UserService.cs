@@ -36,18 +36,15 @@ namespace TimeAndAttendanceSystem.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<UserAddressDTO?> CreateUserAddress(Guid userId, string country, string city, string street, int houseNumber, string? houseNumberPreffix)
+        public async Task<UserAddressDTO?> CreateUserAddress(Guid userId, UserAddAddressDTO userAddAddressDTO)
         {
-            User user = await _userRepository.Get(userId);
-            UserAddress userAddressCheck = await _userAddressRepository.GetUserAddressByUserID(userId);
+            User? user = await _userRepository.Get(userId);
+            UserAddress? userAddressCheck = await _userAddressRepository.GetUserAddressByUserID(userId);
             if (user != null && userAddressCheck == null)
             {
-                UserAddress userAddress = new UserAddress(userId, country, city, street, houseNumber);
-                if (houseNumberPreffix != null)
-                {
-                    userAddress.HouseNumberPreffix = houseNumberPreffix;
-                }
-
+                UserAddress userAddress = new UserAddress();
+                _mapper.Map(userAddAddressDTO, userAddress);
+                userAddress.UserId = userId;
                 await _userAddressRepository.AddUserAddress(userAddress);
                 UserAddressDTO userAddressDTO = _mapper.Map<UserAddressDTO>(userAddress);
                 return userAddressDTO;
@@ -56,54 +53,65 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         }
 
-        public async Task<UserDetailsDTO?> CreateUserDetails(Guid userId, string firstName, string lastName, long personCode, string phoneNumber, string email)
+        public async Task<UserDetailsDTO?> CreateUserDetails(Guid userId, UserAddDetailsDto userAddDetailsDto)
         {
-            User user = await _userRepository.Get(userId);
-            UserDetails userDetailsCheck = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+
+            User? user = await _userRepository.Get(userId);
+            UserDetails? userDetailsCheck = await _userDetailsRepository.GetUserDetailsByUserID(userId);
             if (user != null && userDetailsCheck == null)
             {
-                UserDetails userDetails = new UserDetails(userId, firstName, lastName, personCode, phoneNumber, email);
-                await _userDetailsRepository.AddUserDetails(userDetails);
-                UserDetailsDTO userDetailsDTO = _mapper.Map<UserDetailsDTO>(userDetails);
+                UserDetails userDetails = new UserDetails();
+                _mapper.Map(userAddDetailsDto, userDetails);
+                userDetails.UserId = userId;    
+                var addedUser = await _userDetailsRepository.AddUserDetails(userDetails);
+                UserDetailsDTO userDetailsDTO = _mapper.Map<UserDetailsDTO>(addedUser);
                 return userDetailsDTO;
             }
             return null;
         }
 
-        public async Task DeleteUser(Guid userId)
+        public async Task<UserDTO?> DeleteUser(Guid userId)
         {
-            User user = await _userRepository.Get(userId);
+            User? user = await _userRepository.Get(userId);
             if (user != null)
             {
                 await _userRepository.DeleteUser(user);
+                return _mapper.Map<UserDTO>(user);
             }
+            return null;
         }
 
-        public async Task DeleteUserAddress(Guid userId)
+        public async Task<UserAddressDTO?> DeleteUserAddress(Guid userId)
         {
-            UserAddress userAddress = await _userAddressRepository.Get(userId);
+            UserAddress? userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
             if (userAddress != null)
             {
                 await _userAddressRepository.DeleteUserAddress(userAddress);
+                return _mapper.Map<UserAddressDTO>(userAddress);
             }
+            return null;
         }
 
-        public async Task DeleteUserDetails(Guid userId)
+        public async Task<UserDetailsDTO?> DeleteUserDetails(Guid userId)
         {
-            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            UserDetails? userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
             if (userDetails != null)
             {
                 await _userDetailsRepository.DeleteUserDetails(userDetails);
+                return _mapper.Map<UserDetailsDTO>(userDetails);
             }
+            return null;
         }
 
-        public async Task DeleteUserPhoto(Guid userId)
+        public async Task<UserPhotoDTO?> DeleteUserPhoto(Guid userId)
         {
-            UserPhoto userPhoto = await _userPhotosRepository.GetUserPhoto(userId);
+            UserPhoto? userPhoto = await _userPhotosRepository.GetUserPhoto(userId);
             if (userPhoto != null)
             {
                 await _userPhotosRepository.DeleteUserPhoto(userPhoto);
+                return _mapper.Map<UserPhotoDTO>(userPhoto);
             }
+            return null;
         }
 
         public async Task<IEnumerable<UserDTO>?> GetAllUsers()
@@ -119,19 +127,23 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserAddressDTO?> GetUserAddress(Guid userId)
         {
-            User user = await _userRepository.Get(userId);
+            User? user = await _userRepository.Get(userId);
             if (user != null)
             {
-                UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(user.Id);
-                UserAddressDTO userAddressDTO = _mapper.Map<UserAddressDTO>(userAddress);
-                return userAddressDTO;
+                UserAddress? userAddress = await _userAddressRepository.GetUserAddressByUserID(user.Id);
+                if (userAddress != null)
+                {
+                    UserAddressDTO userAddressDTO = _mapper.Map<UserAddressDTO>(userAddress);
+                    return userAddressDTO;
+                }
+                return null;
             }
             return null;
         }
 
         public async Task<UserDTO?> GetUserByID(Guid userId)
         {
-            User user = await _userRepository.Get(userId);
+            User? user = await _userRepository.Get(userId);
             if (user != null)
             {
                 UserDTO userDTO = _mapper.Map<UserDTO>(user);
@@ -142,7 +154,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserDTO?> GetUserByUserName(string username)
         {
-            User user = await _userRepository.Get(username);
+            User? user = await _userRepository.Get(username);
             UserDTO userDTO = _mapper.Map<UserDTO>(user);
 
             return userDTO;
@@ -150,31 +162,39 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserDetailsDTO?> GetUserDetails(Guid userId)
         {
-            User user = await _userRepository.Get(userId);
+            User? user = await _userRepository.Get(userId);
             if (user != null)
             {
-                UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(user.Id);
-                UserDetailsDTO userDetailsDTO = _mapper.Map<UserDetailsDTO>(userDetails);
-                return userDetailsDTO;
+                UserDetails? userDetails = await _userDetailsRepository.GetUserDetailsByUserID(user.Id);
+                if (userDetails != null)
+                {
+                    UserDetailsDTO userDetailsDTO = _mapper.Map<UserDetailsDTO>(userDetails);
+                    return userDetailsDTO;
+                }
+                return null;
             }
             return null;
         }
 
         public async Task<UserPhotoDTO?> GetUserPhoto(Guid userId)
         {
-            User user = await _userRepository.Get(userId);
+            User? user = await _userRepository.Get(userId);
             if (user != null)
             {
-                UserPhoto userPhoto = await _userPhotosRepository.GetUserPhoto(user.Id);
-                UserPhotoDTO userPhotoDTO = _mapper.Map<UserPhotoDTO>(userPhoto);
-                return userPhotoDTO;
+                UserPhoto? userPhoto = await _userPhotosRepository.GetUserPhoto(user.Id);
+                if (userPhoto != null)
+                {
+                    UserPhotoDTO userPhotoDTO = _mapper.Map<UserPhotoDTO>(userPhoto);
+                    return userPhotoDTO;
+                }
+                return null;
             }
             return null;
         }
 
         public async Task<UserAddressDTO?> UpdateUserAddressCity(Guid userId, string newCity)
         {
-            UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
+            UserAddress? userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
             if (userAddress != null)
             {
                 userAddress.City = newCity;
@@ -188,7 +208,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserAddressDTO?> UpdateUserAddressCountry(Guid userId, string newCountry)
         {
-            UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
+            UserAddress? userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
             if (userAddress != null)
             {
                 userAddress.Country = newCountry;
@@ -201,7 +221,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserAddressDTO?> UpdateUserAddressHouseNumber(Guid userId, int newHouseNumber)
         {
-            UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
+            UserAddress? userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
             if (userAddress != null)
             {
                 userAddress.HouseNumber = newHouseNumber;
@@ -214,7 +234,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserAddressDTO?> UpdateUserAddressHouseNumberPreffix(Guid userId, string newHouseNumberPreffix)
         {
-            UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
+            UserAddress? userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
             if (userAddress != null)
             {
                 userAddress.HouseNumberPreffix = newHouseNumberPreffix;
@@ -227,7 +247,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserAddressDTO?> UpdateUserAddressStreet(Guid userId, string newStreet)
         {
-            UserAddress userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
+            UserAddress? userAddress = await _userAddressRepository.GetUserAddressByUserID(userId);
             if (userAddress != null)
             {
                 userAddress.Street = newStreet;
@@ -240,7 +260,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserDetailsDTO?> UpdateUserEmail(Guid userId, string newEmail)
         {
-            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            UserDetails? userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
             if (userDetails != null)
             {
                 userDetails.Email = newEmail;
@@ -253,7 +273,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserDetailsDTO?> UpdateUserFirstName(Guid userId, string newFirstName)
         {
-            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            UserDetails? userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
             if (userDetails != null)
             {
                 userDetails.FirstName = newFirstName;
@@ -266,7 +286,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserDetailsDTO?> UpdateUserLastName(Guid userId, string newLastName)
         {
-            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            UserDetails? userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
             if (userDetails != null)
             {
                 userDetails.LastName = newLastName;
@@ -279,7 +299,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserDetailsDTO?> UpdateUserPersonCode(Guid userId, long newPersonCode)
         {
-            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            UserDetails? userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
             if (userDetails != null)
             {
                 userDetails.PersonCode = newPersonCode;
@@ -292,7 +312,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserDetailsDTO?> UpdateUserTelephone(Guid userId, string newTelephone)
         {
-            UserDetails userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
+            UserDetails? userDetails = await _userDetailsRepository.GetUserDetailsByUserID(userId);
             if (userDetails != null)
             {
                 userDetails.PhoneNumber = newTelephone;
@@ -305,8 +325,8 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<UserPhotoDTO?> UploadUserPhoto(Guid userId, byte[] profilePic)
         {
-            User user = await _userRepository.Get(userId);
-            UserPhoto userPhotoCheck = await _userPhotosRepository.GetUserPhoto(userId);
+            User? user = await _userRepository.Get(userId);
+            UserPhoto? userPhotoCheck = await _userPhotosRepository.GetUserPhoto(userId);
             if (user != null && userPhotoCheck == null)
             {
                 UserPhoto userPhoto = new UserPhoto(userId, profilePic);

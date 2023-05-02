@@ -12,6 +12,6 @@ namespace TimeAndAttendanceSystem.Repositories.Models.DTOs
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public byte[] ProfilePic { get; set; }
+        public byte[]? ProfilePic { get; set; }
     }
 }

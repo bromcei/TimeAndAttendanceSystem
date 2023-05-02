@@ -28,7 +28,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("registerUser")]
-    public async Task<ActionResult<User>> RegisterUser(string username, string password)
+    public async Task<ActionResult<UserDTO>> RegisterUser(string username, string password)
     {
         var user = await _authenticationService.CreateUser(username, password);
 
@@ -40,11 +40,14 @@ public class AuthenticationController : ControllerBase
     {
         if(await _authenticationService.Login(username, password))
         {
-            UserDTO user = await _userService.GetUserByUserName(username);
-            var token = await _jwtService.GetJwtToken(username, user.Id, user.UserRole);
-            return token;
+            UserDTO? user = await _userService.GetUserByUserName(username);
+            if(user != null)
+            {
+                var token = await _jwtService.GetJwtToken(username, user.Id, user.UserRole);
+                return token;
+            }
+            return null;
         }
-
         return null;
     }
    

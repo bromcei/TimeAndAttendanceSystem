@@ -20,35 +20,50 @@ namespace TimeAndAttendanceSystem.Repositories.Repositories.Repos
 
         public async Task CreateUser(User user)
         {
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
+            if(_dbContext.Users != null)
+            {
+                await _dbContext.Users.AddAsync(user);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteUser(User user)
         {
-            _dbContext.Users.Remove(user);
-            await _dbContext.SaveChangesAsync();
+            if (_dbContext.Users != null)
+            {
+                _dbContext.Users.Remove(user);
+                await _dbContext.SaveChangesAsync();
+            }
+                
         }
 
-        public async Task<IEnumerable<User>> Get()
+        public async Task<IEnumerable<User>?> Get()
         {
-            return await _dbContext.Users.ToListAsync();
+            if (_dbContext.Users != null)
+            {
+                return await _dbContext.Users.ToListAsync();
+            }
+            return null;   
         }
 
-        public async Task<User> Get(Guid id)
+        public async Task<User?> Get(Guid id)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<User> Get(string userName)
+        public async Task<User?> Get(string userName)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
         }
 
         public async Task UpdateUser(User user)
         {
-            _dbContext.Update(user);
-            await _dbContext.SaveChangesAsync();
+            if (_dbContext.Users != null)
+            {
+                _dbContext.Update(user);
+                await _dbContext.SaveChangesAsync();
+            }
+   
         }
     }
 }

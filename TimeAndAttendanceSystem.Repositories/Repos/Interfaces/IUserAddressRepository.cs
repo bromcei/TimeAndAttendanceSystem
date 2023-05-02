@@ -9,9 +9,9 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Interfaces
 {
     public interface IUserAddressRepository
     {
-        public Task<IEnumerable<UserAddress>> Get();
-        public Task<UserAddress> Get(Guid id);
-        public Task<UserAddress> GetUserAddressByUserID(Guid userId);
+        public Task<IEnumerable<UserAddress>?> Get();
+        public Task<UserAddress?> Get(Guid id);
+        public Task<UserAddress?> GetUserAddressByUserID(Guid userId);
         public Task AddUserAddress(UserAddress userAddress);
         public Task DeleteUserAddress(UserAddress userAddress);
         public Task UpdateUserAddress(UserAddress userAddress);

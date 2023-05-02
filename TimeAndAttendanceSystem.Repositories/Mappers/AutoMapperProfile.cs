@@ -15,8 +15,11 @@ namespace TimeAndAttendanceSystem.Repositories.Mappers
         {
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<UserAddress, UserAddressDTO>().ReverseMap();
+            CreateMap<UserAddress, UserAddAddressDTO>().ReverseMap();
             CreateMap<UserDetails, UserDetailsDTO>().ReverseMap();
+            CreateMap<UserDetails, UserAddDetailsDto>().ReverseMap();
             CreateMap<UserPhoto, UserPhotoDTO>().ReverseMap();
+            
         }
     }
 }

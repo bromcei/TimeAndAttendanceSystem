@@ -19,11 +19,7 @@ namespace TimeAndAttendanceSystem.Repositories.DBContext
         {
 
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder options)
-        //{
-        //    //options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection"));
-        //    options.UseSqlServer($@"Data Source=localhost;Initial Catalog=TimeAndAttendanceDB;Integrated Security=True");
-        //}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasOne(u => u.Details).WithOne(ud => ud.User).HasForeignKey<UserDetails>(ud => ud.UserId);

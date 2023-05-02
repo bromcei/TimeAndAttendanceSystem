@@ -18,17 +18,24 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
             _dbContext = dbContext;
         }
 
-        public async Task AddUserDetails(UserDetails userDetails)
+        public async Task<UserDetails?> AddUserDetails(UserDetails userDetails)
         {
-            await _dbContext.UserDetails.AddAsync(userDetails);
-            await _dbContext.SaveChangesAsync();
+            if(_dbContext.UserDetails != null)
+            {
+                var entity = (await _dbContext.UserDetails.AddAsync(userDetails)).Entity;
+                await _dbContext.SaveChangesAsync();
+                return entity;
+            }
+            return null;
         }
 
         public async Task DeleteUserDetails(UserDetails userDetails)
         {
-
-            _dbContext.UserDetails.Remove(userDetails);
-            await _dbContext.SaveChangesAsync();
+            if (_dbContext.UserDetails != null)
+            {
+                _dbContext.UserDetails.Remove(userDetails);
+                await _dbContext.SaveChangesAsync();
+            }                
         }
 
         public async Task<IEnumerable<UserDetails>?> Get()

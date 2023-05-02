@@ -20,36 +20,60 @@ namespace TimeAndAttendanceSystem.Repositories.Repos.Repos
 
         public async Task AddUserAddress(UserAddress userAddress)
         {
-            await _dbContext.UserAddresses.AddAsync(userAddress);
-            await _dbContext.SaveChangesAsync();
+            if (_dbContext.UserAddresses != null)
+            {
+                await _dbContext.UserAddresses.AddAsync(userAddress);
+                await _dbContext.SaveChangesAsync();
+            }
+            
         }
 
         public async Task DeleteUserAddress(UserAddress userAddress)
         {
-
-            _dbContext.UserAddresses.Remove(userAddress);
-            await _dbContext.SaveChangesAsync();
+            if (_dbContext.UserAddresses != null)
+            {
+                _dbContext.UserAddresses.Remove(userAddress);
+                await _dbContext.SaveChangesAsync();
+            }                
         }
 
-        public async Task<IEnumerable<UserAddress>> Get()
+        public async Task<IEnumerable<UserAddress>?> Get()
         {
-            return await _dbContext.UserAddresses.ToListAsync();
+            if (_dbContext.UserAddresses != null)
+            {
+                return await _dbContext.UserAddresses.ToListAsync();
+            }
+            return null;
         }
 
-        public async Task<UserAddress> Get(Guid id)
+        public async Task<UserAddress?> Get(Guid id)
         {
-            return await _dbContext.UserAddresses.FirstOrDefaultAsync(ua => ua.Id == id);
+            if (_dbContext.UserAddresses != null)
+            {
+                return await _dbContext.UserAddresses.FirstOrDefaultAsync(ua => ua.Id == id);
+            }
+            return null;
+            
         }
 
-        public async Task<UserAddress> GetUserAddressByUserID(Guid userId)
+        public async Task<UserAddress?> GetUserAddressByUserID(Guid userId)
         {
-            return await _dbContext.UserAddresses.FirstOrDefaultAsync(ua => ua.UserId == userId);
+            if (_dbContext.UserAddresses != null)
+            {
+                return await _dbContext.UserAddresses.FirstOrDefaultAsync(ua => ua.UserId == userId);
+            }
+            return null;
+                
         }
 
         public async Task UpdateUserAddress(UserAddress userAddress)
         {
-            _dbContext.Update(userAddress);
-            await _dbContext.SaveChangesAsync();
+            if (_dbContext.UserAddresses != null)
+            {
+                _dbContext.Update(userAddress);
+                await _dbContext.SaveChangesAsync();
+            }
+               
         }
     }
 }

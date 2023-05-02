@@ -37,7 +37,7 @@ namespace TimeAndAttendanceSystem.Controllers
         [HttpGet("getUser")]
         public async Task<ActionResult<User>> GetUser()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var user = await _userService.GetUserByUserName(userName);
             if (user == null)
             {
@@ -50,7 +50,7 @@ namespace TimeAndAttendanceSystem.Controllers
         [HttpDelete("deleteUser")]
         public async Task<ActionResult<string>> DeleteUser()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var user = await _userService.GetUserByUserName(userName);
             if (user == null)
             {
@@ -64,71 +64,47 @@ namespace TimeAndAttendanceSystem.Controllers
         [HttpGet("getUserDetails")]
         public async Task<ActionResult<UserDetailsDTO>> GetUserDetails()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid userId = new Guid(userIdStr);
-            var user = await _userService.GetUserByID(userId);
-            
-            if (user != null)
+            UserDetailsDTO? userDetails = await _userService.GetUserDetails(userId);
+            if(userDetails != null)
             {
-                UserDetailsDTO userDetails = await _userService.GetUserDetails(userId);
-                if(userDetails != null)
-                    return Ok(userDetails);
-                return NotFound($"User {user.Id} does not have any details");
+                return Ok(userDetails);
             }
-
-            return NotFound("Such user doewsnt exists");
+                
+            return NotFound($"User {userId} does not have any details");
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
         [HttpDelete("deleteUserDetails")]
         public async Task<ActionResult<string>> DeleteUserDetails()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid userId = new Guid(userIdStr);
-            var user = await _userService.GetUserByID(userId);
-
-            if (user != null)
-            {
-                await _userService.DeleteUserDetails(userId);
+            UserDetailsDTO? userDetails = await _userService.DeleteUserDetails(userId); 
+            if (userDetails != null)
+            {       
                 return Ok($"User {userName} person details was deleted from system");
-
             }
-            return NotFound("Such user doesnt exists");
+            return NotFound("Such entity doesnt exists");
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
         [HttpPost("postUserDetails")]
-        public async Task<ActionResult<string>> PostUserDetails(
-            [Required][StringLength(50, MinimumLength = 2)] string firstName,
-            [Required][StringLength(50, MinimumLength = 2)] string lastName,
-            [Required] long personCode,
-            [Required][StringLength(12, MinimumLength = 2)] string phoneNumber,
-            [Required][StringLength(50, MinimumLength = 2)] string email)
+        public async Task<ActionResult<string>> PostUserDetails(UserAddDetailsDto userAddDetailsDto)
         {
-            if (ModelState.IsValid)
-            {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
+                var userDetails = await _userService.CreateUserDetails(userId, userAddDetailsDto);
+                if (userDetails != null)
                 {
-                    UserDetailsDTO userDetails = await _userService.CreateUserDetails(userId, firstName, lastName, personCode, phoneNumber, email);
-                    if (userDetails != null)
-                    {
-                        return Ok($"User {userName} details was added");
-                    }
-                    return BadRequest("Can not user overwrite user details, please use update");
-
+                    return Ok($"User {userName} details was added");
                 }
-
-                return NotFound("Such user does not exists");
-            }
-            return BadRequest("Please check input parameters");
-
-        }
+                return BadRequest("Can not user overwrite user details, please use update");
+        }        
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
         [HttpPut("updateUserFirstName")]
@@ -136,19 +112,17 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
+                var userDetailsDTO = await _userService.UpdateUserFirstName(userId, newFirstName);
+                if (userDetailsDTO != null)
                 {
-                    await _userService.UpdateUserFirstName(userId, newFirstName);
                     return Ok($"User {userName} first name was changed to '{newFirstName}'");
                 }
-
                 return NotFound("Such user does not exists");
             }
-            return BadRequest("Please check input parameters, input max length 50");
+            return BadRequest("Please check input parameters");
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
@@ -157,13 +131,13 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
+                var userDetails = await _userService.UpdateUserLastName(userId, newLastName);
+                if (userDetails != null)
                 {
-                    await _userService.UpdateUserLastName(userId, newLastName);
+                    
                     return Ok($"User {userName} last name was changed to '{newLastName}'");
                 }
 
@@ -178,13 +152,12 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
+                var userDetails = await _userService.UpdateUserPersonCode(userId, newPersonCode);
+                if (userDetails != null)
                 {
-                    await _userService.UpdateUserPersonCode(userId, newPersonCode);
                     return Ok($"User {userName} person code was changed");
                 }
 
@@ -199,16 +172,14 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
-                {
-                    await _userService.UpdateUserTelephone(userId, newPhoneNumber);
+                var userDetails = await _userService.UpdateUserTelephone(userId, newPhoneNumber);
+                if (userDetails != null)
+                {                    
                     return Ok($"User {userName} telephone number was changed");
                 }
-
                 return NotFound("Such user does not exists");
             }
             return BadRequest("Please check input parameters, max string length 12");
@@ -221,16 +192,14 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
-                {
-                    await _userService.UpdateUserEmail(userId, newEmail);
+                var userDetails = await _userService.UpdateUserEmail(userId, newEmail);
+                if (userDetails != null)
+                {                    
                     return Ok($"User {userName} telephone number was changed");
                 }
-
                 return NotFound("Such user does not exists");
             }
             return BadRequest("Please check input parameters, max string length 50");
@@ -240,64 +209,44 @@ namespace TimeAndAttendanceSystem.Controllers
         [HttpGet("getUserAddress")]
         public async Task<ActionResult<UserAddressDTO>> GetUserAddress()
         {
-            var userName = User.Identity.Name;
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid userId = new Guid(userIdStr);
-            var user = await _userService.GetUserByID(userId);
-
-            if (user != null)
+            var userAdress = await _userService.GetUserAddress(userId);
+            if (userAdress != null)
             {
-                UserAddressDTO userAdress = await _userService.GetUserAddress(userId);
-                if (userAdress != null)
-                    return Ok(userAdress);
-                return NotFound($"User {user.Id} does not have any details");
+                return Ok(userAdress);               
             }
-
-            return NotFound("Such user doesnt exists");
+            return NotFound("Such entity doesnt exists");
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
         [HttpDelete("deleteUserAddress")]
         public async Task<ActionResult<string>> DeleteUserAddress()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid userId = new Guid(userIdStr);
-            var user = await _userService.GetUserByID(userId);
-
-            if (user != null)
+            var userAddress = await _userService.DeleteUserAddress(userId);
+            if (userAddress != null)
             {
-                await _userService.DeleteUserAddress(userId);
                 return Ok($"User {userName} address was deleted from system");
-
             }
-            return NotFound("Such user doesnt exists");
+            return NotFound("Such entity doesnt exists");
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
         [HttpPost("addUserAddress")]
-        public async Task<ActionResult<string>> AddUserAddress(
-            [Required][StringLength(50, MinimumLength = 2)] string country,
-            [Required][StringLength(50, MinimumLength = 2)] string city,
-            [Required][StringLength(50, MinimumLength = 2)] string street, 
-            int houseNumber,
-            [StringLength(50, MinimumLength = 2)] string? houseNumberPrefix)
+        public async Task<ActionResult<string>> AddUserAddress(UserAddAddressDTO userAddAddressDTO)
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid userId = new Guid(userIdStr);
-            var user = await _userService.GetUserByID(userId);
-            if (user != null)
+            var userAdressAdded = await _userService.CreateUserAddress(userId, userAddAddressDTO);
+            if (userAdressAdded != null)
             {
-                var userAdressAdded = await _userService.CreateUserAddress(userId, country, city, street, houseNumber, houseNumberPrefix);
-                if (userAdressAdded != null)
-                {
-                    return Ok($"User {userName} Address was created");
-                }
-                return BadRequest($"User {userName} Address is already created, use update methods");
+                return Ok($"User {userName} Address was created");
             }
-
-            return NotFound("Such user does not exists");
+            return BadRequest($"User {userName} Address is already created, use update methods");
         }
         
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
@@ -306,20 +255,19 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
+                var addedUserAddresDTO = await _userService.UpdateUserAddressCountry(userId, newCountry);
+                if (addedUserAddresDTO != null)
                 {
-                    await _userService.UpdateUserAddressCountry(userId, newCountry);
                     return Ok($"User {userName} Country was updated");
                 }
-
                 return NotFound("Such user does not exists");
             }
-            return BadRequest("Please check input parameters, max string length 50");
+            return BadRequest("Problem with form"); ;
         }
+   
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
         [HttpPut("updateUserCity")]
@@ -327,13 +275,12 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
-                {
-                    await _userService.UpdateUserAddressCity(userId, newCity);
+                var userAdress = await _userService.UpdateUserAddressCity(userId, newCity);
+                if (userAdress != null)                {
+                    
                     return Ok($"User {userName} City was updated");
                 }
                 return NotFound("Such user does not exists");
@@ -347,13 +294,12 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
-                {
-                    await _userService.UpdateUserAddressStreet(userId, newStreet);
+                var userAddress = await _userService.UpdateUserAddressStreet(userId, newStreet);
+                if (userAddress != null)
+                {                    
                     return Ok($"User {userName} City was updated");
                 }
                 return NotFound("Such user does not exists");
@@ -367,13 +313,12 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
-                {
-                    await _userService.UpdateUserAddressHouseNumber(userId, newHouseNum);
+                var userAddress = await _userService.UpdateUserAddressHouseNumber(userId, newHouseNum);
+                if (userAddress != null)
+                {                   
                     return Ok($"User {userName} City was updated");
                 }
                 return NotFound("Such user does not exists");
@@ -387,13 +332,12 @@ namespace TimeAndAttendanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Guid userId = new Guid(userIdStr);
-                var user = await _userService.GetUserByID(userId);
-                if (user != null)
-                {
-                    await _userService.UpdateUserAddressHouseNumberPreffix(userId, newHousePreffix);
+                var userAddress = await _userService.UpdateUserAddressHouseNumberPreffix(userId, newHousePreffix);
+                if (userAddress != null)
+                {                    
                     return Ok($"User {userName} City was updated");
                 }
                 return NotFound("Such user does not exists");
@@ -405,7 +349,7 @@ namespace TimeAndAttendanceSystem.Controllers
         [HttpPost("uploadUserPhoto")]
         public async Task<ActionResult<string>> UploadUserPhoto([FromForm] ImageUploadRequest imageUploadRequest)
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid userId = new Guid(userIdStr);
             var user = await _userService.GetUserByID(userId);
@@ -423,51 +367,57 @@ namespace TimeAndAttendanceSystem.Controllers
                     }
                     return BadRequest($"User {userName} photo can not be overrided, please delete photo first");
                 }
-                return BadRequest("Something wrong with picture");
             }
             return NotFound("Such user does not exists");
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
         [HttpGet("getUserPhoto")]
-        public async Task<ActionResult<string>> GetUserPhoto()
+        public async Task<ActionResult> GetUserPhoto()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Guid userId = new Guid(userIdStr);
-            var user = await _userService.GetUserByID(userId);
-
-            if (user != null)
+            if(userIdStr != null)
             {
-                UserPhotoDTO userPhoto = await _userService.GetUserPhoto(userId);
-                if (userPhoto != null)
+                Guid userId = new Guid(userIdStr);
+                var user = await _userService.GetUserByID(userId);
+
+                if (user != null)
                 {
-                    var img = await _imageReshapeService.DownloadImage(userPhoto.ProfilePic);
-                    return Ok(img);
-                } 
-                return NotFound($"User {user.Id} does not have photo");
+                    UserPhotoDTO userPhoto = await _userService.GetUserPhoto(userId);
+                    if (userPhoto != null)
+                    {
+                        var img = await _imageReshapeService.DownloadImage(userPhoto.ProfilePic);
+                        return File(userPhoto.ProfilePic, $"image.jpg");
+                    }
+                    return NotFound($"User {user.Id} does not have photo");
+                }
+                return NotFound("Such entity doesnt exists");
             }
-            return NotFound("Such user doesnt exists");
+            return NotFound("Such entity doesnt exists");
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user,admin")]
         [HttpDelete("deleteUserPhoto")]
         public async Task<ActionResult<string>> DeleteUserPhoto()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Guid userId = new Guid(userIdStr);
-            var user = await _userService.GetUserByID(userId);
-            
-            if (user != null)
+            if(userIdStr != null)
             {
-                UserPhotoDTO userPhoto = await _userService.GetUserPhoto(userId);
-                if (userPhoto != null)
+                Guid userId = new Guid(userIdStr);
+                var user = await _userService.GetUserByID(userId);
+
+                if (user != null)
                 {
-                    await _userService.DeleteUserPhoto(userId);
-                    return Ok($"User {userName} photo was deleted");
+                    UserPhotoDTO userPhoto = await _userService.GetUserPhoto(userId);
+                    if (userPhoto != null)
+                    {
+                        await _userService.DeleteUserPhoto(userId);
+                        return Ok($"User {userName} photo was deleted");
+                    }
+                    return NotFound($"User {user.Id} does not have photo");
                 }
-                return NotFound($"User {user.Id} does not have photo");
             }
             return NotFound("Such user doesnt exists");
         }

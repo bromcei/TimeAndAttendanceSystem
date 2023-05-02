@@ -4,19 +4,23 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimeAndAttendanceSystem.Repositories.Models.Entities;
 
 namespace TimeAndAttendanceSystem.Repositories.Models.DTOs
 {
-    public class UserAddressDTO
+    public class UserAddAddressDTO
     {
-
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
         public string? Country { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
         public string? City { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
         public string? Street { get; set; }
+        [Required]
         public int? HouseNumber { get; set; }
+        [StringLength(2, MinimumLength = 2)]
         public string? HouseNumberPreffix { get; set; }
     }
 }

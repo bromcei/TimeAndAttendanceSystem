@@ -35,8 +35,8 @@ namespace TimeAndAttendanceSystem.Services.Services
         public async Task<Image> DownloadImage(byte[] imageData)
         {
             Image image = Image.Load(imageData);
-            var ms = new MemoryStream(); 
-            await image.SaveAsJpegAsync(ms);
+            //var ms = new MemoryStream(); 
+            //await image.SaveAsJpegAsync(ms);
             return image;
         }
     }

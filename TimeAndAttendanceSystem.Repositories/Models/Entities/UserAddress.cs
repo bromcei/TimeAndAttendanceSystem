@@ -32,6 +32,11 @@ namespace TimeAndAttendanceSystem.Repositories.Models.Entities
             Street = street;
             HouseNumber = houseNumber;
         }
-        
+        public UserAddress()
+        {
+
+        }
+
+
     }
 }
