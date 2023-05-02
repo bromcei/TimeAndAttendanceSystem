@@ -34,7 +34,7 @@ namespace TimeAndAttendanceSystem.Services.Services
 
         public async Task<Image> DownloadImage(byte[] imageData)
         {
-            Image image = Image.Load(imageData);
+            Image image = await Image.LoadAsync(imageData);
             return image;
         }
     }
