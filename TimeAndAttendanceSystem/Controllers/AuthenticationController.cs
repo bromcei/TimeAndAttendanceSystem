@@ -3,7 +3,6 @@ using TimeAndAttendanceSystem.Repositories.Models.DTOs;
 using TimeAndAttendanceSystem.Repositories.Models.Entities;
 using TimeAndAttendanceSystem.Services.Interfaces;
 
-namespace JWT_API.Controllers;
 
 public class AuthenticationController : ControllerBase
 {
